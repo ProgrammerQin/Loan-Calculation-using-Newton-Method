@@ -1,0 +1,44 @@
+def f(n):
+    a = 100000
+    r = 0.06
+    p = 10000
+    X = a * (1 + r) ** n
+    Y = p * (((1 + r) ** n-1) / r)
+    return X - Y
+
+
+def f_prime(n):
+    a = 100000
+    r = 0.06
+    p = 10000
+    X_prime = a * r * (1 + r) ** (n - 1)
+    Y_prime = (p * r * (1 + r) ** (-n)) / (r ** 2)
+    return X_prime - Y_prime
+
+
+def newtonA(guess):
+    n = guess
+    iterations = 0
+    remaining_amount = f(n)
+    print("Iteration\t n\t Remaining Amount")
+    while remaining_amount > 0:
+        iterations += 1
+        n = n - remaining_amount / f_prime(n)
+        remaining_amount = f(n)
+        print(f"{iterations}\t\t {n:.6f}\t {remaining_amount:.6f}")
+
+    return n
+
+# Initial guess
+n_initial = 10
+
+# Solve for n
+n_final = newtonA(n_initial)
+
+# Calculate the number of years needed to repay the loan
+years_needed = round(n_final, 2)
+
+# Print the table and the number of years needed to repay the loan
+print("\nFinal solution:")
+print("n =", n_final)
+print("Number of years needed to repay the loan:", years_needed)
